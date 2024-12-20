@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-merc <lde-merc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 13:49:50 by lde-merc          #+#    #+#             */
-/*   Updated: 2024/11/22 17:05:56 by lde-merc         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:07:26 by lde-merc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <fcntl.h>
 #include <stdio.h>
 
@@ -93,16 +93,16 @@ char	*ft_update(char *rest)
 
 char	*get_next_line(int fd)
 {
-	static char	*rest;
+	static char	*rest[4096];
 	char		*newline;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
-	rest = ft_read_file(fd, rest);
-	if (!rest)
+	rest[fd] = ft_read_file(fd, rest[fd]);
+	if (!rest[fd])
 		return (NULL);
-	newline = ft_pickline(rest);
-	rest = ft_update(rest);
+	newline = ft_pickline(rest[fd]);
+	rest[fd] = ft_update(rest[fd]);
 	return (newline);
 }
 
